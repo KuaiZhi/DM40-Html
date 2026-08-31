@@ -40,10 +40,11 @@ https://kuaizhi.github.io/DM40-Html/
 
 ## 界面截图
 
-![电脑端示意图](images/1.png)
+<img src="images/1.png" alt="电脑端示意图" width="33%">
+电脑端示意图
 
-
-![手机端示意图](images/2.jpg)
+<img src="images/2.jpg" alt="手机端示意图" width="25%">
+手机端示意图
 
 
 
