@@ -15,7 +15,7 @@ window.DM40Parser = (() => {
     if (kind.startsWith("V") || kind === "DIODE") return scales.V[key];
     if (kind.startsWith("A")) return scales.A[key];
     if (["RES", "RES_ONLINE", "CONT"].includes(kind)) return scales.R[key];
-    if (kind === "TEMP") return [6000, "C", 1, 1];
+    if (kind === "TEMP") return [6000, "℃", 1, 1];
     return null;
   }
 
@@ -49,10 +49,13 @@ window.DM40Parser = (() => {
     result.mode = kind;
     result.range = range;
     result.unit = unit;
-    result.value = m1 === 0xffff ? "OL" : (m1 * fullScale / 60000 * mul * (m1ScaleFlag & 1 ? -1 : 1)).toFixed(decimals);
+    const sign = m1ScaleFlag & 1 ? -1 : 1;
+    result.normValue = m1 === 0xffff ? null : sign * m1 * fullScale / 60000;
+    result.value = m1 === 0xffff ? "OL" : (m1 * fullScale / 60000 * mul * sign).toFixed(decimals);
     const status = data[6];
     result.battery = status & 7;
-    result.status = `${status & 8 ? "充电" : ""}${status & 0x80 ? " · HOLD" : ""}`.replace(/^ · /, "");
+    result.charging = (status & 8) !== 0;
+    result.hold = (status & 0x80) !== 0;
     return result;
   }
   return { parse };

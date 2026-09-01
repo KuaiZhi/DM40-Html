@@ -10,32 +10,51 @@
   <main class="app-shell">
     <header class="topbar">
       <div>
-        <p class="eyebrow">DM40 WEB HOST</p>
-        <h1>DM40 Bluetooth Console</h1>
+        <p class="eyebrow" data-i18n="eyebrow">DM40 网页上位机</p>
+        <h1 data-i18n="appTitle">DM40 蓝牙控制台</h1>
       </div>
-      <span id="connectionState" class="status" data-state="offline">未连接</span>
+      <div class="status-actions">
+        <span id="connectionState" class="status" data-state="offline">未连接</span>
+        <button id="languageButton" class="language-button" type="button">EN</button>
+      </div>
     </header>
 
     <section class="toolbar" aria-label="设备连接">
-      <button id="scanButton">扫描设备</button>
-      <button id="disconnectButton" disabled>断开</button>
+      <button id="scanButton" data-i18n="scan">扫描设备</button>
+      <button id="disconnectButton" data-i18n="disconnect" disabled>断开</button>
     </section>
+
+    <p id="message" class="message" role="status">页面脚本加载中...</p>
 
     <section class="panel reading-panel">
       <div class="panel-heading">
-        <h2>设备信息: <span id="deviceName">--</span></h2>
+        <h2><span data-i18n="deviceInfo">设备信息</span>: <span id="deviceName">--</span></h2>
         <span id="batteryStatus">电量 --</span>
       </div>
     </section>
 
     <section class="panel measurement-panel">
       <div class="panel-heading">
-        <h2>测量值</h2>
+        <h2 data-i18n="measurement">测量值</h2>
         <span id="rangeValue">--</span>
       </div>
       <div class="measurement-reading">
         <strong id="readingValue">---</strong>
         <span id="statusValue">--</span>
+      </div>
+    </section>
+
+    <section class="panel chart-panel is-collapsed">
+      <div class="panel-heading">
+        <h2 data-i18n="waveform">实时波形</h2>
+        <button id="toggleChartButton" class="small-button" data-collapse-target="waveformBody">展开</button>
+      </div>
+      <div id="waveformBody" class="waveform-wrap collapsible-body" hidden>
+        <div class="waveform-labels" aria-hidden="true">
+          <span id="chartMax">--</span>
+          <span id="chartMin">--</span>
+        </div>
+        <canvas id="waveformCanvas" class="waveform" role="img" aria-label="DM40 实时测量波形"></canvas>
       </div>
     </section>
 
@@ -48,15 +67,16 @@
       <button class="mode-button" data-mode-group="F" disabled>频率</button>
     </section>
 
-    <section class="panel">
+    <section class="panel is-collapsed">
       <div class="panel-heading">
-        <h2>原始数据</h2>
-        <button id="clearButton" class="small-button">清空</button>
+        <h2 data-i18n="rawPackets">原始数据</h2>
+        <div class="panel-actions">
+          <button id="clearButton" class="small-button" data-i18n="clear">清空</button>
+          <button id="toggleRawButton" class="small-button" data-collapse-target="rawLog">展开</button>
+        </div>
       </div>
-      <pre id="rawLog" class="raw-log" aria-live="polite">等待连接设备...</pre>
+      <pre id="rawLog" class="raw-log" aria-live="polite" data-waiting="true" hidden>等待连接设备...</pre>
     </section>
-
-    <p id="message" class="message" role="status">页面脚本加载中...</p>
   </main>
   <script defer src="protocol/constants.js"></script>
   <script defer src="protocol/parser.js"></script>
